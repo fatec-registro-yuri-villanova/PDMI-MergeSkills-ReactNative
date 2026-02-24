@@ -20,8 +20,7 @@ export default function LoginScreen() {
         if (error) {
             Alert.alert('Erro ao entrar', error.message);
         } else {
-            Alert.alert('Sucesso', 'Login realizado com sucesso!');
-            // router.replace('/home');
+            router.replace('/courses');
         }
         setLoading(false);
     }
@@ -40,6 +39,7 @@ export default function LoginScreen() {
                     placeholder="E-mail"
                     value={email}
                     onChangeText={setEmail}
+                    keyboardType="email-address"
                     autoCapitalize="none"
                 />
             </View>
