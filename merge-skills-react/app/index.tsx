@@ -1,27 +1,25 @@
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useEffect } from 'react';
-import * as Fundamentos from '../basics/FundamentosJS';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeScreen() {
+export default function SplashScreen() {
+    const router = useRouter();
 
     useEffect(() => {
-        console.log("=== EXECUTANDO A AULA 01 (FUNDAMENTOS JS) ===");
-        Fundamentos.entendendoVariaveis();
-        Fundamentos.lidandoComNulos();
-        Fundamentos.checarAprovacao(8.5);
-        Fundamentos.testandoLoops();
+        const timer = setTimeout(() => {
+            router.replace('/login');
+        }, 2000);
 
-        const aluno = new Fundamentos.AlunoNormal("Yuri", 20);
-        aluno.apresentar();
-
-        const alunoVip = new Fundamentos.AlunoPremium(1, "yuri_dev", true);
-        alunoVip.autenticar();
+        return () => clearTimeout(timer);
     }, []);
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Bem-vindo ao Merge Skills Mobile!</Text>
-            <Text style={styles.subtitle}>(Aula 01 - Hello World)</Text>
+            <View style={styles.logoContainer}>
+                <Ionicons name="person" size={100} color="#ff0000" />
+                <Text style={styles.logoText}>Merge Skills</Text>
+            </View>
         </View>
     );
 }
@@ -31,17 +29,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
+        justifyContent: 'center'
     },
-    title: {
-        fontSize: 24,
+    logoContainer: {
+        alignItems: 'center'
+    },
+    logoText: {
+        fontSize: 48,
         fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 10
-    },
-    subtitle: {
-        fontSize: 18,
-        color: '#666'
+        color: '#333',
+        marginTop: 16
     }
 });
