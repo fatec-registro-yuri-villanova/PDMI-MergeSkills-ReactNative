@@ -1,12 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
+import { apiClient } from '../lib/api';
 
 export default function RegisterScreen() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    async function handleRegister() {
+        if (!email || !password) {
+            Alert.alert('Erro', 'Por favor, preencha todos os campos');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await apiClient.auth.signUp(email, password);
+            Alert.alert('Sucesso', 'Conta criada com sucesso!', [
+                { text: 'OK', onPress: () => router.back() }
+            ]);
+        } catch (error: any) {
+            Alert.alert('Erro ao cadastrar', error.message || 'Ocorreu um erro inesperado');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -37,10 +58,11 @@ export default function RegisterScreen() {
             />
 
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => router.back()}
+                style={[styles.button, loading ? styles.buttonDisabled : null]}
+                onPress={handleRegister}
+                disabled={loading}
             >
-                <Text style={styles.buttonText}>Criar Conta</Text>
+                {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Criar Conta</Text>}
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.back()}>
@@ -83,6 +105,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 24,
         marginBottom: 20
+    },
+    buttonDisabled: {
+        backgroundColor: '#ffaaaa'
     },
     buttonText: {
         color: '#fff',

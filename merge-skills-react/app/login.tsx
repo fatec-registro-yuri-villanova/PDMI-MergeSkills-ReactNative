@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { apiClient } from '../lib/api';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    async function handleLogin() {
+        setLoading(true);
+        try {
+            await apiClient.auth.signIn(email, password);
+            router.replace('/courses');
+        } catch (error: any) {
+            Alert.alert('Erro ao entrar', error.message || 'Verifique suas credenciais');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Entrar</Text>
+            <Text style={styles.header}>Merge Skills</Text>
+            <Text style={styles.subheader}>Login com API (Render)</Text>
+
+            <View style={styles.spacer} />
 
             <View style={styles.inputContainer}>
-                <Ionicons name="person-outline" size={20} color="#666" style={styles.icon} />
+                <Ionicons name="mail-outline" size={20} color="#666" style={styles.icon} />
                 <TextInput
                     style={styles.input}
                     placeholder="E-mail"
@@ -36,14 +53,15 @@ export default function LoginScreen() {
             </View>
 
             <TouchableOpacity
-                style={styles.button}
-                onPress={() => console.log('Login attempt')}
+                style={[styles.button, loading ? styles.buttonDisabled : null]}
+                onPress={handleLogin}
+                disabled={loading}
             >
-                <Text style={styles.buttonText}>Acessar Plataforma</Text>
+                {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Entrar</Text>}
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push('/register')}>
-                <Text style={styles.linkText}>Não possui conta? Cadastre-se</Text>
+                <Text style={styles.linkText}>Criar nova conta</Text>
             </TouchableOpacity>
         </View>
     );
@@ -61,6 +79,10 @@ const styles = StyleSheet.create({
         fontSize: 32,
         fontWeight: 'bold',
         color: '#ff0000',
+    },
+    subheader: {
+        fontSize: 16,
+        color: '#666',
         marginBottom: 40
     },
     inputContainer: {
@@ -91,6 +113,9 @@ const styles = StyleSheet.create({
         marginTop: 24,
         marginBottom: 20
     },
+    buttonDisabled: {
+        backgroundColor: '#ffaaaa'
+    },
     buttonText: {
         color: '#fff',
         fontSize: 18,
@@ -99,5 +124,8 @@ const styles = StyleSheet.create({
     linkText: {
         color: '#333',
         fontSize: 14
+    },
+    spacer: {
+        height: 20
     }
 });
