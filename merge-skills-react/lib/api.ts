@@ -48,10 +48,10 @@ export const apiClient = {
             });
         },
 
-        async signUp(email: string, pass: string) {
+        async signUp(name: string, email: string, pass: string) {
             return apiClient.fetch('/auth/register', {
                 method: 'POST',
-                body: JSON.stringify({ email, password: pass }),
+                body: JSON.stringify({ name, email, password: pass }),
             });
         }
     },
