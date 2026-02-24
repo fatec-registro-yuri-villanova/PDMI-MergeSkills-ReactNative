@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, TouchableOpacity } from 'react-native';
-import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
@@ -21,16 +21,17 @@ export default function CoursesScreen() {
 
     async function fetchCourses() {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('courses')
-            .select('*');
-
-        if (error) {
+        try {
+            const data = await apiClient.db.from('courses');
+            const result = await data.select();
+            if (result) {
+                setCourses(result);
+            }
+        } catch (error: any) {
             console.error('Erro ao buscar cursos:', error.message);
-        } else if (data) {
-            setCourses(data);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     const renderItem = ({ item }: { item: Course }) => (

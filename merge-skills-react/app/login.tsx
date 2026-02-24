@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -12,23 +12,20 @@ export default function LoginScreen() {
 
     async function handleLogin() {
         setLoading(true);
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            Alert.alert('Erro ao entrar', error.message);
-        } else {
+        try {
+            await apiClient.auth.signIn(email, password);
             router.replace('/courses');
+        } catch (error: any) {
+            Alert.alert('Erro ao entrar', error.message || 'Verifique suas credenciais');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Merge Skills</Text>
-            <Text style={styles.subheader}>Login com Supabase</Text>
+            <Text style={styles.subheader}>Login com API (Render)</Text>
 
             <View style={styles.spacer} />
 
