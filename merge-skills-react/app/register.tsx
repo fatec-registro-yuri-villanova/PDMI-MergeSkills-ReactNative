@@ -11,14 +11,14 @@ export default function RegisterScreen() {
     const router = useRouter();
 
     async function handleRegister() {
-        if (!email || !password) {
+        if (!name || !email || !password) {
             Alert.alert('Erro', 'Por favor, preencha todos os campos');
             return;
         }
 
         setLoading(true);
         try {
-            await apiClient.auth.signUp(email, password);
+            await apiClient.auth.signUp(name, email, password);
             Alert.alert('Sucesso', 'Conta criada com sucesso!', [
                 { text: 'OK', onPress: () => router.back() }
             ]);
