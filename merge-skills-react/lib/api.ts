@@ -17,6 +17,7 @@ export const apiClient = {
             'Content-Type': 'application/json',
             'apikey': API_CONFIG.SUPABASE_KEY,
             'Authorization': `Bearer ${API_CONFIG.SUPABASE_KEY}`,
+            'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
             ...options.headers,
         };
 
