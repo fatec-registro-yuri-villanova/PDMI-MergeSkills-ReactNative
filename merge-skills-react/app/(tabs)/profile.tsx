@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Colors from '../../constants/Colors';
@@ -14,7 +15,7 @@ export default function ProfileScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Meu Perfil</Text>
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         padding: 24
     },
     header: {
-        marginBottom: 32
+        marginBottom: 32,
     },
     headerTitle: {
         fontSize: 32,

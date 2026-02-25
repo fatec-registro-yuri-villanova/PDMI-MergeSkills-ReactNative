@@ -10,12 +10,9 @@ export default function TabLayout() {
                 tabBarActiveTintColor: Colors.colors.stitchGreen,
                 tabBarInactiveTintColor: '#8E8E93',
                 tabBarStyle: {
-                    backgroundColor: Colors.dark.nav, // #1F222A per Spec
+                    backgroundColor: Colors.dark.nav,
                     borderTopWidth: 0,
                     elevation: 0,
-                    height: 60,
-                    paddingBottom: 8,
-                    paddingTop: 8,
                 },
                 headerShown: false,
             }}

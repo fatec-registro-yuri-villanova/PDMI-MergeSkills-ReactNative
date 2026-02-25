@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert, ActivityIndicator, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert, ActivityIndicator, StatusBar, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { apiClient } from '../lib/api';
@@ -74,9 +74,6 @@ export default function LoginScreen() {
         </View>
     );
 }
-
-// Pequeno helper para TouchableOpacity não importado na ReplacementContent
-import { TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {

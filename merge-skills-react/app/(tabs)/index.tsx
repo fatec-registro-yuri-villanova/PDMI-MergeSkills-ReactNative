@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { apiClient } from '../../lib/api';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -46,7 +47,7 @@ export default function CoursesScreen() {
     );
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
             <StatusBar barStyle="light-content" />
             <View style={styles.header}>
                 <View>
@@ -100,13 +101,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.dark.background
     },
     header: {
-        height: 100,
         backgroundColor: Colors.dark.background,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 24,
-        paddingTop: 20
+        paddingVertical: 12,
     },
     headerLabel: {
         color: '#999',
@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
     },
     list: {
         padding: 24,
-        paddingTop: 0
+        paddingTop: 0,
+        paddingBottom: 100
     },
     card: {
         backgroundColor: Colors.dark.surface,
