@@ -1,19 +1,31 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+const stitchGreen = '#4CDF20';
+const stitchDarkBackground = '#0F0F0F';
+const stitchDarkSurface = '#1C1C1E';
 
 export default {
   light: {
     text: '#000',
     background: '#fff',
-    tint: tintColorLight,
+    tint: stitchGreen,
     tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: stitchGreen,
+    surface: '#F2F2F7',
   },
   dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
+    text: '#E5E5E5',
+    background: stitchDarkBackground,
+    tint: stitchGreen,
     tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: stitchGreen,
+    surface: stitchDarkSurface,
+    nav: '#1F222A',
   },
+  colors: {
+    stitchGreen,
+    stitchDarkBackground,
+    stitchDarkSurface,
+    stitchError: '#FF453A',
+    stitchGreenDark: '#36A015',
+    stitchGreenContainer: '#1B4D0B',
+  }
 };

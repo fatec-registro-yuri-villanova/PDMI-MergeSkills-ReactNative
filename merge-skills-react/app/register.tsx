@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert, StatusBar, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { apiClient } from '../lib/api';
+import Colors from '../constants/Colors';
+import StitchButton from '../components/StitchButton';
 
 export default function RegisterScreen() {
     const [name, setName] = useState('');
@@ -31,42 +33,51 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Cadastrar</Text>
+            <StatusBar barStyle="light-content" />
+            <Text style={styles.header}>Nova Conta</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Nome Completo"
-                value={name}
-                onChangeText={setName}
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome Completo"
+                    placeholderTextColor="#999"
+                    value={name}
+                    onChangeText={setName}
+                />
+            </View>
 
-            <TextInput
-                style={styles.input}
-                placeholder="E-mail"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
+                    placeholderTextColor="#999"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+            </View>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    placeholderTextColor="#999"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
+            </View>
 
-            <TouchableOpacity
-                style={[styles.button, loading ? styles.buttonDisabled : null]}
+            <StitchButton
+                title="Criar Conta"
                 onPress={handleRegister}
-                disabled={loading}
-            >
-                {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Criar Conta</Text>}
-            </TouchableOpacity>
+                loading={loading}
+                style={styles.registerButton}
+            />
 
-            <TouchableOpacity onPress={() => router.back()}>
-                <Text style={styles.linkText}>Voltar para o Login</Text>
+            <TouchableOpacity onPress={() => router.back()} style={styles.linkButton}>
+                <Text style={styles.linkText}>Já tem uma conta? <Text style={styles.linkHighlight}>Entre aqui</Text></Text>
             </TouchableOpacity>
         </View>
     );
@@ -76,46 +87,44 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 24,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.dark.background,
         justifyContent: 'center',
-        alignItems: 'center'
     },
     header: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#ff0000',
-        marginBottom: 40
+        color: Colors.colors.stitchGreen,
+        marginBottom: 40,
+        textAlign: 'center'
     },
-    input: {
+    inputContainer: {
         width: '100%',
         height: 56,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 12,
         paddingHorizontal: 16,
         marginBottom: 16,
-        fontSize: 16
+        borderWidth: 1,
+        borderColor: '#333',
+        justifyContent: 'center'
     },
-    button: {
-        width: '100%',
-        height: 56,
-        backgroundColor: '#ff0000',
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
+    input: {
+        fontSize: 16,
+        color: Colors.dark.text
+    },
+    registerButton: {
         marginTop: 24,
         marginBottom: 20
     },
-    buttonDisabled: {
-        backgroundColor: '#ffaaaa'
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold'
+    linkButton: {
+        alignItems: 'center'
     },
     linkText: {
-        color: '#333',
+        color: '#999',
         fontSize: 14
+    },
+    linkHighlight: {
+        color: Colors.colors.stitchGreen,
+        fontWeight: 'bold'
     }
 });
