@@ -1,43 +1,29 @@
-# Fix: Bottom Navigation Overlap & Unclickable Tabs
+# TypeScript Typing Fundamentals Plan 
 
-## Problem
+## Task
+The user requested deeper explanations of TypeScript typing in Aula 01, which currently focuses too much on JS basics and lacks a dedicated section on explicit TS types, primitive types, inference, union types, and when to avoid `any`.
 
-The app's bottom navigation (tab bar) visually overlaps with the native system navigation, and **clicks on the app's tab bar don't work** — only the native system navigation responds to touches.
+## Phase 1: Planning (Completed)
+Agent `project-planner` has drafted this plan. The goal is to add a new fundamental topic "Tipagem Forte e Tipos Primitivos" to both the MDX living docs and the `FundamentosTS.ts` code file.
 
-## Root Cause
+## Phase 2: Implementation (Pending Approval)
 
-**Double safe-area bottom compensation:**
+### Agent 1: `@frontend-specialist` — Content & Code Update
+- **`living-docs/docs/pdmi/aula-01.mdx`**: Insert a new sub-topic inside the TypeScript Fundamentals section covering:
+  - Primitivos: `string`, `number`, `boolean`
+  - Inferência de tipo vs Tipagem explícita
+  - `any` (avoidance) e Union Types (`string | null`)
+  - Renumber existing topics (from 8 to 9 total topics).
+- **`merge-skills-react/basics/FundamentosTS.ts`**: Add an equivalent code section with didactic examples of the above typing concepts.
 
-1. `(tabs)/_layout.tsx` — Tab bar adds `insets.bottom` to its `height` and `paddingBottom` ✅ (correct)
-2. `(tabs)/index.tsx` and `profile.tsx` — Each screen wraps content in `<SafeAreaView edges={['bottom']}>` ❌ (conflict!)
+### Agent 2: `@test-engineer` — Validation & Checks
+- Run the TypeScript compiler (`tsc --noEmit`) or linting to ensure the newly added code in `FundamentosTS.ts` is syntactically correct and type-safe.
 
-The screen-level `SafeAreaView edges={['bottom']}` adds extra bottom padding **on top of** the tab bar's own bottom handling. This pushes the SafeAreaView's bottom padding area **over** the tab bar, creating an invisible touch-intercepting layer.
+### Agent 3: `@devops-engineer` — Branch Propagation
+- Commit changes to `aula-01`.
+- Propagate the updated `FundamentosTS.ts` file to all subsequent branches (`aula-02` through `aula-20`) to maintain consistency across the project's progression.
 
-## Fix Strategy (3 Agents)
-
-### Agent 1: `@debugger` — Root Cause Diagnosis ✅
-- Identified the double-inset conflict (done above)
-
-### Agent 2: `@mobile-developer` — Screen Layout Fix
-
-#### [MODIFY] `(tabs)/index.tsx`
-- **Remove** `edges={['bottom']}` from `SafeAreaView` → change to `edges={['top']}`
-- Remove hardcoded `paddingTop: 50` from header (SafeAreaView top handles it now)
-- Remove `height: 120` from header (no longer needed with proper top inset)
-
-#### [MODIFY] `(tabs)/profile.tsx`
-- **Remove** `edges={['bottom']}` from `SafeAreaView` → change to `edges={['top']}`
-- Remove hardcoded `paddingTop: 30` from header
-
-#### [MODIFY] `(tabs)/_layout.tsx`
-- Keep current tab bar logic (correct)
-- Ensure `position: 'absolute'` is **NOT** set (default behavior is fine)
-
-### Agent 3: `@frontend-specialist` — Verify Layout Integrity
-- Ensure no content is hidden behind tab bar (FlatList `paddingBottom` is sufficient)
-- Confirm top status bar area is properly handled by `edges={['top']}`
-
-## Key Principle
-
-> Tab screens should handle `top` safe area only.
-> The `Tabs` navigator handles `bottom` safe area via `tabBarStyle`.
+## Verification
+- Code builds without TS errors.
+- MDX file renders correctly.
+- All branches reflect the new TS section.
