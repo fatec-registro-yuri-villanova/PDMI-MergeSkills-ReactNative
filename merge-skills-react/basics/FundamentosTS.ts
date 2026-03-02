@@ -21,9 +21,30 @@ export const entendendoVariaveis = () => {
     console.log(`Curso: ${nomeDoCurso}, Versão: ${count}`);
 }
 
-// 2. NULL SAFETY (Optional Chaining & Nullish Coalescing)
-export const lidandoComNulos = () => {
-    let githubDoProfessor: string | null = null;
+// 2. TIPAGEM FORTE E TIPOS PRIMITIVOS
+export const entendendoTipos = () => {
+    // Tipos Primitivos Básicos
+    const nome: string = "Yuri";
+    const idade: number = 28;
+    const isDeveloper: boolean = true;
+
+    // Inferência vs Tipagem Explícita
+    let cidade = "São Paulo"; // TS infere que é string
+    // cidade = 10; // ERRO: O TS não permite mudar o tipo associado
+
+    // Union Types (Permite mais de um tipo, muito usado com null)
+    let telefone: string | null = null;
+    telefone = "11999999999";
+
+    // O perigo do 'any' (Foge da verificação do TS - EVITE!)
+    let variavelDinamica: any = "Texto";
+    variavelDinamica = 100;
+    variavelDinamica.metodoInexistente(); // O TS não avisa o erro aqui!
+}
+
+// 3. NULL SAFETY (Optional Chaining & Nullish Coalescing)
+
+export const lidandoComNulos = (githubDoProfessor: string | null = null) => {
 
     // Opcional Chaining `?.` (Equivalente ao Safe Call ?. do Kotlin)
     const letras = githubDoProfessor?.length;
