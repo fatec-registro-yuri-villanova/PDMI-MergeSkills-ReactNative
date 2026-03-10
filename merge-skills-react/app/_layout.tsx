@@ -1,15 +1,24 @@
+/**
+ * ==========================================================
+ * _LAYOUT.TSX — NAVEGAÇÃO COM EXPO ROUTER
+ * ==========================================================
+ *
+ * Este arquivo define a ESTRUTURA de navegação do app.
+ * Cada <Stack.Screen> corresponde a um arquivo na pasta app/.
+ *
+ * Expo Router usa navegação baseada em arquivos:
+ *   app/index.tsx  → rota "/"
+ *   app/login.tsx  → rota "/login"
+ *   app/hello.tsx  → rota "/hello"
+ */
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -28,9 +37,7 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+  if (!loaded) return null;
 
   return <RootLayoutNav />;
 }
@@ -38,10 +45,10 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="hello" options={{ headerShown: true, title: 'Meu Primeiro Componente' }} />
+      <Stack.Screen name="login" />
       <Stack.Screen name="register" options={{ headerShown: true, title: 'Criar Conta' }} />
-      <Stack.Screen name="courses" options={{ headerShown: false }} />
     </Stack>
   );
 }
