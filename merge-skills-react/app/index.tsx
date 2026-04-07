@@ -1,75 +1,50 @@
-/**
- * ==========================================================
- * INDEX.TSX — TELA SPLASH (useEffect na Prática)
- * ==========================================================
- *
- * Conceitos ensinados:
- * - useEffect: executar código quando o componente monta
- * - Cleanup function: limpar recursos ao desmontar
- * - Array de dependências: controlar quando o efeito roda
- * - Navegação com expo-router (router.replace)
- */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function SplashScreen() {
-    const router = useRouter();
-
-    // ── useEffect: O que é? ──
-    // useEffect roda código APÓS o componente ser renderizado na tela.
-    // É usado para: timers, chamadas de API, listeners, etc.
-    //
-    // Sintaxe: useEffect(callback, dependências)
-    //   - callback: função que será executada
-    //   - dependências: array que controla QUANDO re-executar
-    //     - [] (vazio) = roda apenas 1 vez (ao montar)
-    //     - [variavel] = roda quando 'variavel' muda
-    //     - sem array = roda a cada re-render (CUIDADO!)
-    useEffect(() => {
-        // Após 2 segundos, navega para a tela de login
-        const timer = setTimeout(() => {
-            router.replace('/login');
-        }, 2000);
-
-        // ── Cleanup Function ──
-        // Retornar uma função dentro do useEffect é o "cleanup".
-        // Ela roda quando o componente SAI da tela (desmonta).
-        // Aqui: cancela o timer caso o usuário saia antes dos 2s.
-        return () => clearTimeout(timer);
-    }, []); // [] = este efeito roda APENAS uma vez, quando a tela abre
-
-    return (
-        <View style={styles.container}>
-            <View style={styles.logoContainer}>
-                <Ionicons name="school" size={80} color="#FF6B6B" />
-                <Text style={styles.logoText}>Merge Skills</Text>
-                <Text style={styles.tagline}>Carregando...</Text>
-            </View>
-        </View>
-    );
+export default function StartScreen() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Aula 04: Design System</Text>
+        <Text style={styles.subtitle}>Ponto de partida para implementação.</Text>
+        <Text style={styles.instruction}>
+          Instruções:
+          1. Configure os tokens em constants/Colors.ts
+          2. Configure a Tipografia em constants/Typography.ts
+          3. Crie o componente StitchButton em components/
+        </Text>
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F8F9FA',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logoContainer: {
-        alignItems: 'center',
-    },
-    logoText: {
-        fontSize: 36,
-        fontWeight: 'bold',
-        color: '#2D3436',
-        marginTop: 16,
-    },
-    tagline: {
-        fontSize: 14,
-        color: '#B2BEC3',
-        marginTop: 8,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  content: {
+    padding: 24,
+    justifyContent: 'center',
+    flex: 1,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 24,
+  },
+  instruction: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#333',
+    backgroundColor: '#F5F5F5',
+    padding: 16,
+    borderRadius: 8,
+  }
 });
