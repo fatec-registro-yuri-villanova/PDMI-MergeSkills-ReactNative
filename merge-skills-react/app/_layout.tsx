@@ -58,6 +58,8 @@ export default function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      {/* login é a primeira rota — abre ao iniciar o app */}
+      <Stack.Screen name="login" />
       <Stack.Screen name="index" />
     </Stack>
   );

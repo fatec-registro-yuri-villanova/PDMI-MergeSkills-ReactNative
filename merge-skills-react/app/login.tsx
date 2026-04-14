@@ -3,8 +3,7 @@
  * LOGIN.TSX — TELA DE AUTENTICAÇÃO (MergeSkills)
  * ==========================================================
  *
- * Rota: /login (Expo Router)
- * Spec: lddm-specs/design/screens-mobile/login-screen.md
+ * Rota: /login — primeira tela do app (definida em _layout.tsx)
  *
  * CONCEITO DA AULA 05: Estado local com useState
  * ─────────────────────────────────────────────────
@@ -24,10 +23,7 @@ import {
   Platform,
   ScrollView,
   SafeAreaView,
-  ActivityIndicator,
-  Alert,
   useColorScheme,
-  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import Colors from '../constants/Colors';
@@ -51,34 +47,36 @@ export default function LoginScreen() {
   const theme = Colors[colorScheme];
 
   // ─────────────────────────────────────────────────
-  // Estados do formulário
-  // Cada campo tem seu próprio estado local com useState
+  // Estados do formulário (useState)
+  // Cada campo é um Controlled Component — o estado
+  // é a única fonte da verdade para o valor exibido.
   // ─────────────────────────────────────────────────
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Validação básica: email e senha preenchidos
+  // Validação: e-mail preenchido e senha com mínimo 6 caracteres
   const isFormValid = email.trim().length > 0 && password.length >= 6;
 
   // ─────────────────────────────────────────────────
-  // Ação de Login (simulada - Aula 05)
-  // Aula 07 implementará a chamada real ao Supabase
+  // Ação de Login (simulada — Aula 05)
+  // Integração real com Supabase será feita na Aula 07
   // ─────────────────────────────────────────────────
   function handleLogin() {
     if (!isFormValid) {
-      setErrorMessage('Preencha e-mail e senha (mínimo 6 caracteres).');
+      setErrorMessage('Preencha o e-mail e a senha (mínimo 6 caracteres).');
       return;
     }
 
     setIsLoading(true);
     setErrorMessage(null);
 
-    // Simula delay de rede (será substituído pelo Supabase na aula 07)
+    // Simula delay de rede (substituído pelo Supabase na Aula 07)
     setTimeout(() => {
       setIsLoading(false);
-      Alert.alert('✅ Login simulado', `Bem-vindo, ${email}!\n\nA integração com Supabase será feita na Aula 07.`);
+      // Navega para a tela principal (Showcase / FlatList)
+      router.replace('/');
     }, 1500);
   }
 
@@ -116,7 +114,7 @@ export default function LoginScreen() {
             {/*
               StitchTextField com useState
               ─────────────────────────────
-              value={email}         → valor vem do estado
+              value={email}            → valor vem do estado
               onValueChange={setEmail} → atualiza o estado ao digitar
             */}
             <StitchTextField
@@ -126,8 +124,6 @@ export default function LoginScreen() {
               placeholder="seu@email.com"
               keyboardType="email-address"
               autoCapitalize="none"
-              isError={errorMessage !== null && email.trim().length === 0}
-              errorMessage="O e-mail é obrigatório"
             />
 
             <StitchTextField
@@ -140,7 +136,7 @@ export default function LoginScreen() {
               errorMessage="A senha deve ter pelo menos 6 caracteres"
             />
 
-            {/* Exibição de erro geral */}
+            {/* Exibição do erro geral */}
             {errorMessage ? (
               <Text style={[Typography.bodySmall, styles.errorBanner, { color: theme.error }]}>
                 ⚠️ {errorMessage}
@@ -155,18 +151,6 @@ export default function LoginScreen() {
             enabled={!isLoading}
             loading={isLoading}
           />
-
-          {/* ── Link de Cadastro ── */}
-          <View style={styles.registerRow}>
-            <Text style={[Typography.bodyMedium, { color: theme.outline }]}>
-              Não tem conta?{' '}
-            </Text>
-            <TouchableOpacity onPress={() => router.push('/register' as any)}>
-              <Text style={[Typography.bodyMedium, { color: theme.primary, fontWeight: 'bold' }]}>
-                Cadastrar-se
-              </Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -183,9 +167,9 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    paddingTop: 48,
+    paddingTop: 80,
     paddingBottom: 32,
-    maxWidth: 480, // Limita largura em tablets
+    maxWidth: 480,   // limita largura em tablets
     alignSelf: 'center',
     width: '100%',
   },
@@ -199,10 +183,5 @@ const styles = StyleSheet.create({
   errorBanner: {
     marginTop: 4,
     marginBottom: 8,
-  },
-  registerRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 24,
   },
 });
