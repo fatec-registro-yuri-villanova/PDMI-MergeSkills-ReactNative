@@ -1,23 +1,45 @@
 /**
  * ==========================================================
- * INDEX.TSX — DESIGN SYSTEM SHOWCASE (PDMI Aula 04)
+ * INDEX.TSX — DESIGN SYSTEM SHOWCASE (PDMI Aula 04 → 05)
  * ==========================================================
- * 
+ *
  * Este arquivo serve como Playground para os alunos validarem
- * o Design System.
+ * o Design System. Na Aula 05, incluímos os novos componentes:
+ *   - StitchCard  → container para listas
+ *   - FlatList    → renderização performática de coleções
  */
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  useColorScheme 
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  useColorScheme,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { StitchButton } from '../components/StitchButton';
+import { StitchCard } from '../components/StitchCard';
+
+// ─────────────────────────────────────────────────
+// Dados mock para o FlatList (Aula 05)
+// Na Aula 08, estes dados virão da API real
+// ─────────────────────────────────────────────────
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  lessons: number;
+}
+
+const MOCK_COURSES: Course[] = [
+  { id: '1', title: 'Kotlin para Android', description: 'Aprenda a linguagem moderna para desenvolvimento Android nativo.', lessons: 12 },
+  { id: '2', title: 'React Native Essentials', description: 'Do zero à publicação de um app mobile multiplataforma.', lessons: 10 },
+  { id: '3', title: 'Design System MergeSkills', description: 'Tokens, componentes e padrões UI do ecossistema MergeSkills.', lessons: 6 },
+  { id: '4', title: 'Supabase & Backend', description: 'Autenticação, banco de dados e storage com Supabase.', lessons: 8 },
+];
 
 export default function DesignSystemShowcase() {
   const colorScheme = useColorScheme() ?? 'light';
@@ -26,14 +48,14 @@ export default function DesignSystemShowcase() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        
+
         {/* === HEADER === */}
         <View style={styles.header}>
             <Text style={[Typography.headlineMedium, { color: theme.primary }]}>
                 Design System
             </Text>
             <Text style={[Typography.bodyMedium, { color: theme.onSurface }]}>
-                MergeSkills KMP Framework
+                MergeSkills — Aula 05: Listas e Formulários
             </Text>
         </View>
 
@@ -57,28 +79,63 @@ export default function DesignSystemShowcase() {
             <Text style={[Typography.labelLarge, { color: theme.outline, marginTop: 4 }]}>LABEL LARGE (Inter SemiBold)</Text>
         </Section>
 
-        {/* === COMPONENTES === */}
-        <Section title="Components: StitchButton">
-            <StitchButton 
-                text="Explorar Cursos" 
-                onClick={() => console.log('Click!')} 
+        {/* === STITCH BUTTON === */}
+        <Section title="StitchButton">
+            <StitchButton
+                text="Explorar Cursos"
+                onClick={() => console.log('Click!')}
             />
-            
+
             <View style={{ height: 16 }} />
-            
-            <StitchButton 
-                text="Entrar" 
+
+            <StitchButton
+                text="Entrar"
                 loading={true}
-                onClick={() => {}} 
+                onClick={() => {}}
             />
 
             <View style={{ height: 16 }} />
 
-            <StitchButton 
-                text="Continuar" 
+            <StitchButton
+                text="Continuar"
                 enabled={false}
-                onClick={() => {}} 
+                onClick={() => {}}
             />
+        </Section>
+
+        {/* ── AULA 05: FLATLIST + STITCHCARD ── */}
+        <Section title="Aula 05 — FlatList + StitchCard">
+          <Text style={[Typography.bodySmall, { color: theme.outline, marginBottom: 16 }]}>
+            O FlatList renderiza apenas os itens visíveis na tela, garantindo
+            performance mesmo com listas longas. Cada item é um StitchCard.
+          </Text>
+
+          {/*
+            FlatList: Renderização performática de arrays
+            ─────────────────────────────────────────────
+            data          → array de itens (nosso estado/mock)
+            keyExtractor  → função que retorna chave única por item
+            renderItem    → função que retorna o JSX de cada item
+            scrollEnabled → false, pois o pai já tem ScrollView
+          */}
+          <FlatList
+            data={MOCK_COURSES}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <StitchCard onPress={() => console.log('Curso:', item.title)}>
+                <Text style={[Typography.titleMedium, { color: theme.onSurface }]}>
+                  {item.title}
+                </Text>
+                <Text style={[Typography.bodySmall, { color: theme.outline, marginTop: 4 }]}>
+                  {item.description}
+                </Text>
+                <Text style={[Typography.labelSmall, { color: theme.primary, marginTop: 8 }]}>
+                  {item.lessons} lições
+                </Text>
+              </StitchCard>
+            )}
+          />
         </Section>
 
       </ScrollView>
